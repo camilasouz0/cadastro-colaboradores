@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
-use App\Persistence\Interfaces\AuthUseCaseInterface;
+use App\Models\User;
+use App\Policies\UsersPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,8 +15,10 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \App\Persistence\Interfaces\AuthUseCaseInterface::class,
-            \App\Persistence\Repository\AuthRepository::class
+            \App\Persistence\Interfaces\AuthRepositoryInterface::class,
+            \App\Persistence\Repository\AuthRepository::class,
+            \App\Persistence\Interfaces\EmployeesRepositoryInterface::class,
+            \App\Persistence\Repository\EmployeesRepository::class
         );
     }
 
@@ -23,6 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::policy(User::class, UsersPolicy::class);
     }
 }

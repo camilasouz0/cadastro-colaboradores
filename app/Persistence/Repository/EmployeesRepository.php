@@ -3,6 +3,7 @@
 namespace App\Persistence\Repository;
 
 use App\Models\User;
+use App\Persistence\Interfaces\EmployeesRepositoryInterface;
 
 class EmployeesRepository implements EmployeesRepositoryInterface
 {
@@ -18,7 +19,7 @@ class EmployeesRepository implements EmployeesRepositoryInterface
       $this->user = $user;
    }
 
-   public function findByUser($dados) 
+   public function findByEmployee($dados) 
    {
       
    }

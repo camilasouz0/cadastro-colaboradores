@@ -28,7 +28,7 @@
 1. Faça o clone do projeto com gitclone
 
 ```bash
-  git clone https://github.com/camilasouz0/laravel-api-restful.git
+  git clone https://github.com/camilasouz0/cadastro-colaboradores.git
 ```
 
 2. Faça a Instalação do projeto utilizando o seguinte comando
@@ -69,7 +69,13 @@ Para rodar esse projeto, você vai precisar alterar as seguintes variáveis de a
 `DB_PASSWORD`
 
 ## Documentação da API
-+ A api do Swagger se encontra disponível em http://localhost:8000/swagger/index.html (Se o projeto estiver rodando localmente com o artisan)
+
+Executar o comando
+```
+sudo ./swagger.sh
+```
+
++ A doc Swagger se encontra disponível em http://localhost:8000/api/documentation
 + Todas as requisições devem conter o seguinte header :
 ```
 { 

@@ -2,19 +2,19 @@
 
 namespace App\Business\UseCases;
 
-use App\Business\UseCase\Cases\AuthUseCase;
+use App\Business\UseCases\Cases\LoginUseCase;
 
 class EmployeesUserCases {
 
-   protected $authUseCase;
+   protected $loginUseCase;
    public function __construct(
-      AuthUseCase $authUseCase
+      LoginUseCase $loginUseCase
    )
    {
-      $this->authUseCase = $authUseCase;
+      $this->loginUseCase = $loginUseCase;
    }
 
    public function login($dados) {
-      $this->authUseCase->execute($dados);
+      $this->loginUseCase->execute($dados);
    }
 }

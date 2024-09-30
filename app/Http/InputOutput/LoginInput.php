@@ -2,10 +2,13 @@
 declare(strict_types=1); 
 namespace App\Http\InputOutput;
 
+use App\Trait\ObjectValueTrait;
+
 class LoginInput
 {
-   protected string $email;
-   protected string $password;
+   use ObjectValueTrait;
+   protected $email;
+   protected $password;
 
    public function __construct(array $params) {
       $this->email = $params['email'];

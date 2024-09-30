@@ -2,14 +2,14 @@
 
 namespace App\Persistence\Repository;
 
-use App\Persistence\Interfaces\AuthUseCaseInterface;
+use App\Persistence\Interfaces\AuthRepositoryInterface;
 use App\Http\InputOutput\LoginInput;
 use App\Http\InputOutput\RegisterInput;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Exception;
 
-class AuthRepository implements AuthUseCaseInterface
+class AuthRepository implements AuthRepositoryInterface
 {
    protected $useCase;
    protected $users;
@@ -19,10 +19,10 @@ class AuthRepository implements AuthUseCaseInterface
       $this->users = $users;
    }
 
-   public function login(LoginInput $credentials):array
+   public function login(array $credentials):array
    {
       try {
-         $token = auth()->attempt(['email' => $credentials->getEmail(), 'password' => $credentials->getPassword()]);
+         $token = auth()->attempt(['email' => $credentials['email'], 'password' => $credentials['password']]);
          if ($token) {
             return  [
                'access_token' => $token,
@@ -38,14 +38,10 @@ class AuthRepository implements AuthUseCaseInterface
       }
    }
 
-   public function register(RegisterInput $dados):bool
+   public function register(array $dados):bool
    {
 
-      $result = $this->users->create([
-         'email' => $dados->getEmail(),
-         'name' => $dados->getName(),
-         'password' => Hash::make($dados->getPassword())
-      ]);
+      $result = $this->users->create($dados);
       
       if($result) {
          return true;

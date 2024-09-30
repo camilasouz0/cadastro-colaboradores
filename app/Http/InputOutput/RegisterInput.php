@@ -2,8 +2,11 @@
 declare(strict_types=1); 
 namespace App\Http\InputOutput;
 
+use App\Trait\ObjectValueTrait;
+
 class RegisterInput
 {
+   use ObjectValueTrait;
    protected string $name;
    protected string $email;
    protected string $password;
