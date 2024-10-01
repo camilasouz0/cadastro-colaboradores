@@ -4,11 +4,11 @@ namespace App\Business\UseCases\Cases;
 
 use App\Persistence\Interfaces\AuthRepositoryInterface;
 
-class LoginUseCase extends BaseAuthUserCases {
+class LoginUseCase extends BaseAuthUseCases {
 
    public AuthRepositoryInterface $repository;
 
-   public function execute(array $dados) {
-      $this->repository->login($dados);
+   public function execute(array $dados): array {
+      return $this->repository->login($dados);
    }
 }

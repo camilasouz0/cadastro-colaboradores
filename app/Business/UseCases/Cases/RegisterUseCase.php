@@ -5,7 +5,7 @@ namespace App\Business\UseCases\Cases;
 use App\Persistence\Interfaces\AuthRepositoryInterface;
 use Exception;
 
-class RegisterUseCase extends BaseAuthUserCases {
+class RegisterUseCase extends BaseAuthUseCases {
 
    public AuthRepositoryInterface $repository;
 

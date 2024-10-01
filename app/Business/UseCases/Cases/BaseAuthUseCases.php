@@ -4,7 +4,7 @@ namespace App\Business\UseCases\Cases;
 
 use App\Persistence\Interfaces\AuthRepositoryInterface;
 
-class BaseAuthUserCases {
+class BaseAuthUseCases {
 
    public AuthRepositoryInterface $repository;
 

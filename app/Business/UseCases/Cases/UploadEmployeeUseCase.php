@@ -4,11 +4,11 @@ namespace App\Business\UseCases\Cases;
 
 use App\Persistence\Interfaces\EmployeesRepositoryInterface;
 
-class EditEmployeeUseCase extends BaseUseCases {
+class UploadEmployeeUseCase extends BaseUseCases {
 
    public EmployeesRepositoryInterface $repository;
 
-   public function execute(array $dados, int $id) {
-      $this->repository->editEmployee($dados, $id);
+   public function execute(int $id) {
+      $this->repository->uploadEmployee($id);
    }
 }

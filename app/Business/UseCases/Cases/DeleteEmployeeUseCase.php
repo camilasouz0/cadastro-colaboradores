@@ -4,11 +4,11 @@ namespace App\Business\UseCases\Cases;
 
 use App\Persistence\Interfaces\EmployeesRepositoryInterface;
 
-class BaseUserCases {
+class DeleteEmployeeUseCase extends BaseUseCases {
 
    public EmployeesRepositoryInterface $repository;
 
-   public function __construct(EmployeesRepositoryInterface $repository){
-      $this->repository = $repository;
+   public function execute(int $id) {
+      $this->repository->deleteEmployee($id);
    }
 }
