@@ -61,12 +61,27 @@
 Para rodar esse projeto, você vai precisar alterar as seguintes variáveis de ambiente no seu .env
 
 `DB_HOST`
-
 `DB_DATABASE`
-
 `DB_USERNAME`
-
 `DB_PASSWORD`
+
+Configurar as variáveis para envio de e-mail
+`MAIL_MAILER=smtp`
+`MAIL_HOST=smtp.gmail.com`
+`MAIL_PORT=465`
+`MAIL_USERNAME=seuemail@empresa.com`
+`MAIL_PASSWORD="chave-autenticação-dois-fatores"`
+`MAIL_ENCRYPTION=tls`
+`MAIL_FROM_ADDRESS=seuemail@empresa.com`
+`MAIL_FROM_NAME="Cadastro de Colaboradores"`
+
+Configurar as variáveis para salvar o upload de arquivo CSV
+`AWS_ACCESS_KEY_ID=access-key-id`
+`AWS_SECRET_ACCESS_KEY=secret-access-key`
+`AWS_DEFAULT_REGION=us-east-1`
+`AWS_BUCKET=employee`
+`AWS_ENDPOINT=http://localhost:9000`
+`AWS_USE_PATH_STYLE_ENDPOINT=false`
 
 ## Documentação da API
 
@@ -74,70 +89,13 @@ Executar o comando
 ```
 sudo ./swagger.sh
 ```
-
 + A doc Swagger se encontra disponível em http://localhost:8000/api/documentation
 + Todas as requisições devem conter o seguinte header :
-```
-{ 
-   Content-Type: application/json, 
-   Accept: application/json, 
-   Authorization: Bearer {token} 
-}
-```
-Onde, {token} é o token obtido ao fazer a requisição de login
-
-#### Realiza o login e recupera o TOKEN JWT
-
-```http
-  POST /api/v1/login
-```
-
-| Parâmetro   | Tipo       |  Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
-| `email` | `string` | **Obrigatório**. Email do usuário
-| `password` | `string` | **Obrigatório**. Senha do usuário |
-
-#### Realiza o registro na API
-
-```http
-  POST /api/v1/register
-```
-
-| Parâmetro   | Tipo       |  Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
-| `name` | `string` | **Obrigatório**. Nome do usuário
-| `email` | `string` | **Obrigatório**. Email do usuário
-| `password` | `string` | **Obrigatório**. Senha do usuário com 6 ou mais caracteres |
-
-#### Retorna todos os usuários
-
-```http
-  GET /api/v1/users
-```
-
-#### Retorna um usuário
-
-```http
-  POST /api/v1/users/${id}
-```
-
-| Parâmetro   | Tipo       | Descrição                                   |
-| :---------- | :--------- | :------------------------------------------ |
-| `id`      | `string` | **Obrigatório**. O ID do usuário que você quer |
-
 
 ## EXECUTAR TESTES (PHPUNIT)
 No terminal para executar todos os testes execute o comando:
 ```
-php vendor\bin\phpunit
-```
-No terminal para executar uma classe específica execute o comando:
-```
-php vendor\bin\phpunit ./tests/[NomeDaClasse]
-```
-No terminal para executar um teste específico execute o comando:
-```
-php vendor\bin\phpunit --filter [METODO] ./tests/[NOMEDACLASSE]
+php artisan test
 ```
 
 ## Licença
