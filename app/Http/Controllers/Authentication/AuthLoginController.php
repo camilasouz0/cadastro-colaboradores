@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Authentication;
-         
+
+use App\Business\UseCases\EmployeesUserCases;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use App\Persistence\Interfaces\AuthRepositoryInterface;
 use App\Http\Controllers\ResponseController;
@@ -17,10 +18,10 @@ use Exception;
 
 class AuthLoginController extends ResponseController
 {
-    /**
+   /**
      * @OA\Info(
-     *     title="API cadastro de colaboradores",
-     *     description="API cadastro de colaboradores",
+     *     title="API Cadastro de Colaboradores",
+     *     description="API para o cadastro de colaboradores",
      *     version="1.0.0",
      *     termsOfService="http://swagger.io/terms/",
      *     @OA\Contact(
@@ -35,7 +36,7 @@ class AuthLoginController extends ResponseController
 
     protected $useCase;
 
-    public function __construct(AuthRepositoryInterface $useCase)
+    public function __construct(EmployeesUserCases $useCase)
     {
         $this->useCase = $useCase;
     }
@@ -43,7 +44,7 @@ class AuthLoginController extends ResponseController
     /**
      * @OA\Post(
      ** path="/api/v1/login",
-     *   tags={"Login"},
+     *   tags={"Authentication"},
      *   summary="Login",
      *   operationId="login",
      *
@@ -102,13 +103,87 @@ class AuthLoginController extends ResponseController
         }
     }
 
+    /**
+     * @OA\Post(
+     ** path="/api/v1/register",
+     *   tags={"Authentication"},
+     *   summary="Register",
+     *   operationId="register",
+     *
+     *   @OA\Parameter(
+     *      name="email",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="birthdate",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string",
+     *           format="date",
+     *           example="01/01/2000"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="profile",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="password",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=200,
+     *       description="Success",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="not found"
+     *   ),
+     *   @OA\Response(
+     *      response=403,
+     *      description="Forbidden"
+     *   )
+     *)
+    */
     public function register(RegisterRequest $request) {
         try {
 
             $input = new RegisterInput($request->all());
-            $response = $this->useCase->register($input->toArray());
+            $this->useCase->register($input->toArray());
 
-            return $this->successResponse($response); 
+            return $this->successResponse('Cadastro realizado com sucesso!'); 
         } catch (HttpException $e) {
             return $this->errorResponse($e, [], $e->getStatusCode());
         } catch (Exception $e) {

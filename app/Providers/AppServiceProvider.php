@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Persistence\Interfaces\EmployeesRepositoryInterface;
+use App\Persistence\Interfaces\AuthRepositoryInterface;
+use App\Persistence\Repository\EmployeesRepository;
+use App\Persistence\Repository\AuthRepository;
 use App\Policies\UsersPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -14,12 +18,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            \App\Persistence\Interfaces\AuthRepositoryInterface::class,
-            \App\Persistence\Repository\AuthRepository::class,
-            \App\Persistence\Interfaces\EmployeesRepositoryInterface::class,
-            \App\Persistence\Repository\EmployeesRepository::class
-        );
+        $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
+        $this->app->bind(EmployeesRepositoryInterface::class, EmployeesRepository::class);
+
     }
 
     /**

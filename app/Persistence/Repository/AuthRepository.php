@@ -2,11 +2,11 @@
 
 namespace App\Persistence\Repository;
 
+use App\Helper\General;
 use App\Persistence\Interfaces\AuthRepositoryInterface;
-use App\Http\InputOutput\LoginInput;
-use App\Http\InputOutput\RegisterInput;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 
 class AuthRepository implements AuthRepositoryInterface
@@ -40,7 +40,8 @@ class AuthRepository implements AuthRepositoryInterface
 
    public function register(array $dados):bool
    {
-
+      $dados['password'] = Hash::make($dados['password']);
+      $dados['birthdate'] = General::formatDate($dados['birthdate']);
       $result = $this->users->create($dados);
       
       if($result) {

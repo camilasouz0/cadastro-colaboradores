@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class EditEmployeeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,9 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8',
-            'birthdate' => 'required|date|date_format:d/m/Y',
-            'profile' => 'in:employee,admin'
+            'name' => 'sometimes',
+            'email' => 'sometimes|email|unique:users,email',
+            'birthdate' => 'sometimes|date|date_format:d/m/Y'
         ];
     }
 
@@ -38,16 +36,11 @@ class RegisterRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'O campo nome é obrigatório.',
-            'email.required' => 'O campo email é obrigatório.',
             'email.email' => 'Por favor, insira um endereço de email válido.',
             'email.unique' => 'Este email já está cadastrado.',
-            'password.required' => 'O campo senha é obrigatório.',
             'password.min' => 'A senha deve ter no mínimo 8 caracteres.',
-            'birthdate.required' => 'O campo data de nascimento é obrigatório.',
             'birthdate.date' => 'A data de nascimento deve ser uma data válida.',
             'birthdate.date_format' => 'A data de nascimento deve estar no formato DD/MM/YY.',
-            'profile.in' => 'O campo perfil deve ser "employee" ou "admin".'
         ];
     }
 }

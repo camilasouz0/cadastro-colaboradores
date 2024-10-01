@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 
 class ResponseController extends Controller
 {	
-    public function successResponse($result = [], $code = 200)
+    public function successResponse($msg = 'sucesso', $result = [], $code = 200)
     {
         $response = [
             'success' => true,
+            'message' => $msg,
             'body' => $result,
         ];
     
@@ -32,7 +33,7 @@ class ResponseController extends Controller
             $response['data'] = $result;
         }
         report($e);
-        $code = $this->isValidHTTPStatusCode($e->getStatusCode()) ? $e->getStatusCode() : 500; 
+        $code = $this->isValidHTTPStatusCode($code) ? $code : 500; 
         return response()->json($response, $code);
     }
 
