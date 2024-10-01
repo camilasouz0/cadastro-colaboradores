@@ -14,7 +14,9 @@ use App\Http\Requests\{
     RegisterRequest,
     LoginRequest
 };
+use App\Mail\WelcomeMail;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 
 class AuthLoginController extends ResponseController
 {
@@ -95,7 +97,7 @@ class AuthLoginController extends ResponseController
             $input = new LoginInput($request->all());
             $response = $this->useCase->login($input->toArray());
 
-            return $this->successResponse($response); 
+            return $this->successResponse('Autenticado com sucesso!', $response); 
         } catch (HttpException $e) {
             return $this->errorResponse($e, [], $e->getStatusCode());
         } catch (Exception $e) {
@@ -182,7 +184,7 @@ class AuthLoginController extends ResponseController
 
             $input = new RegisterInput($request->all());
             $this->useCase->register($input->toArray());
-
+            Mail::to($input->toArray()['email'])->send(new WelcomeMail());
             return $this->successResponse('Cadastro realizado com sucesso!'); 
         } catch (HttpException $e) {
             return $this->errorResponse($e, [], $e->getStatusCode());

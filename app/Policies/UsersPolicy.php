@@ -20,11 +20,11 @@ class UsersPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user): Response
+    public function viewEmployee(User $user, User $employee): Response
     {
-        return $user->profile == "admin"
-                    ? Response::allow() 
-                    : Response::deny("You don't have admin profile");
+        return $user->id == $employee->id_gestor
+                   ? Response::allow() 
+                   : Response::deny("You don't created the user and cannot view");
     }
 
     /**

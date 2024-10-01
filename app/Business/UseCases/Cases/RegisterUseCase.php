@@ -4,6 +4,7 @@ namespace App\Business\UseCases\Cases;
 
 use App\Persistence\Interfaces\AuthRepositoryInterface;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterUseCase extends BaseAuthUseCases {
 
@@ -11,6 +12,7 @@ class RegisterUseCase extends BaseAuthUseCases {
 
    public function execute(array $dados) {
       $this->validatePassword($dados['password'], $dados['birthdate']);
+      $this->verifyIfAuthUserIsAdmin();
 
       $this->repository->register($dados);
    }
@@ -22,5 +24,11 @@ class RegisterUseCase extends BaseAuthUseCases {
       if (strpos($password, $date[2]) !== false) {
          throw new Exception('A senha não pode conter partes do ano de nascimento.');
       }
-  }
+   }
+
+   private function verifyIfAuthUserIsAdmin(): void {
+      if(!(Auth::user() != null) && !(Auth::user()->profile == 'admin')) {
+         throw new Exception('Usuario não pode registrar.');
+      }
+   }
 }

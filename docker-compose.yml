@@ -1,0 +1,25 @@
+volumes:
+  minio-store:
+
+services:
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - type: volume
+        source: minio-store
+        target: /data
+        volume:
+          nocopy: true
+    environment:
+      MINIO_ACCESS_KEY: e5678385c13a5581cc2be40ec5585eec
+      MINIO_SECRET_KEY: c780cc0c162db385fec92d071969ef6a1a732244
+    command: server /data --address ":9000" --console-address ":9001"
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge

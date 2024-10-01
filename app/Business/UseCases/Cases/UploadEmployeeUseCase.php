@@ -8,7 +8,7 @@ class UploadEmployeeUseCase extends BaseUseCases {
 
    public EmployeesRepositoryInterface $repository;
 
-   public function execute(int $id) {
-      $this->repository->uploadEmployee($id);
+   public function execute($dados) {
+      $this->repository->uploadEmployee($dados);
    }
 }

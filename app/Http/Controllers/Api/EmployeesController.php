@@ -66,11 +66,9 @@ class EmployeesController extends ResponseController
      */
 
     public function findByEmployee($id) {
-
-        $response = Gate::inspect('viewAny', Auth::user());
         $result = $this->repository->findByEmployee($id);
+        $response = Gate::inspect('viewEmployee', $result);
 
-        dd($response);
         if ($response->allowed()) {
             return $result;
         } else {
@@ -157,4 +155,93 @@ class EmployeesController extends ResponseController
             return $this->errorResponse($e, [], $e->getCode());
         }
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/employee/delete/{id}",
+     *     summary="Deletar um colaborador",
+     *     description="Exclui um colaborador por ID",
+     *     tags={"Employee"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         schema={"type":"integer"},
+     *         in="path",
+     *         description="Employee ID",
+     *         required=true,
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Colaborador excluído com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Colaborador não encontrado"
+     *     ),
+     *     security={{"apiAuth": {}}}
+     * )
+     */
+    public function deleteEmployee($id) {
+        try {
+            $result = $this->useCases->deleteEmployee($id);
+
+            return $this->successResponse('Colaborador deletado com sucesso!', $result); 
+        } catch (HttpException $e) {
+            return $this->errorResponse($e, [], $e->getStatusCode());
+        } catch (Exception $e) {
+            return $this->errorResponse($e, [], $e->getCode());
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/v1/employee/upload",
+     *     summary="Upload de arquivo de colaboradores",
+     *     description="Faz o upload de um arquivo CSV contendo informações de colaboradores",
+     *     tags={"Employee"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="file",
+     *                     type="string",
+     *                     format="binary",
+     *                     description="Arquivo CSV com informações dos colaboradores"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Arquivo enviado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erro na validação do arquivo"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     security={{"apiAuth": {}}}
+     * )
+    */
+
+    public function uploadEmployee(Request $request) {
+        try {
+            $result = $this->useCases->uploadEmployee($request);
+
+            return $this->successResponse('Arquivo importado com sucesso!', $result); 
+        } catch (HttpException $e) {
+            return $this->errorResponse($e, [], $e->getStatusCode());
+        } catch (Exception $e) {
+            return $this->errorResponse($e, [], $e->getCode());
+        }
+    }
+
 }

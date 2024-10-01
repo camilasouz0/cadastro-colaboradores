@@ -2,9 +2,10 @@
 
 namespace App\Persistence\Repository;
 
-use App\Helper\General;
 use App\Persistence\Interfaces\AuthRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Helper\General;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -42,6 +43,7 @@ class AuthRepository implements AuthRepositoryInterface
    {
       $dados['password'] = Hash::make($dados['password']);
       $dados['birthdate'] = General::formatDate($dados['birthdate']);
+      $dados['id_gestor'] = Auth::user()->id;
       $result = $this->users->create($dados);
       
       if($result) {

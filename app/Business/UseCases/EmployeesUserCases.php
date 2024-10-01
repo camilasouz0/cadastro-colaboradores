@@ -3,6 +3,7 @@
 namespace App\Business\UseCases;
 
 use App\Business\UseCases\Cases\{
+   UploadEmployeeUseCase,
    DeleteEmployeeUseCase,
    EditEmployeeUseCase,
    RegisterUseCase,
@@ -15,18 +16,21 @@ class EmployeesUserCases {
    protected $registerUseCase;
    protected $editEmployeeUseCase;
    protected $deleteEmployeeUseCase;
+   protected $uploadEmployeeUseCase;
 
    public function __construct(
       LoginUseCase $loginUseCase,
       RegisterUseCase $registerUseCase,
       EditEmployeeUseCase $editEmployeeUseCase,
-      DeleteEmployeeUseCase $deleteEmployeeUseCase
+      DeleteEmployeeUseCase $deleteEmployeeUseCase,
+      UploadEmployeeUseCase $uploadEmployeeUseCase
    )
    {
       $this->loginUseCase = $loginUseCase;
       $this->registerUseCase = $registerUseCase;
       $this->editEmployeeUseCase = $editEmployeeUseCase;
       $this->deleteEmployeeUseCase = $deleteEmployeeUseCase;
+      $this->uploadEmployeeUseCase = $uploadEmployeeUseCase;
    }
 
    public function login($dados): array {
@@ -45,7 +49,7 @@ class EmployeesUserCases {
       $this->deleteEmployeeUseCase->execute($id);
    }
 
-   public function uploadEmployee($id) {
-      // $this->uploadEmployeeUseCase->execute($id);
+   public function uploadEmployee($dados) {
+      $this->uploadEmployeeUseCase->execute($dados);
    }
 }

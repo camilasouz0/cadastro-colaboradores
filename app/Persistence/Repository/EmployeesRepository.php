@@ -5,6 +5,7 @@ namespace App\Persistence\Repository;
 use App\Helper\General;
 use App\Models\User;
 use App\Persistence\Interfaces\EmployeesRepositoryInterface;
+use Illuminate\Support\Facades\Storage;
 
 class EmployeesRepository implements EmployeesRepositoryInterface
 {
@@ -17,12 +18,12 @@ class EmployeesRepository implements EmployeesRepositoryInterface
       $this->user = $user;
    }
 
-   public function findByEmployee($id): array
+   public function findByEmployee($id): User
    {
       $result = $this->user
       ->where('profile', 'employee')
       ->where('id', $id)
-      ->toArray();
+      ->first();
 
       return $result;
    }
@@ -46,5 +47,26 @@ class EmployeesRepository implements EmployeesRepositoryInterface
       } else {
          return false;
       }
+   }
+
+   public function deleteEmployee($id): bool
+   {
+      $result = $this->user->find($id)->delete();
+
+      if($result) {
+         return true;
+      } else {
+         return false;
+      }
+   }
+
+   public function uploadEmployee($file) : bool{
+      if ($file->hasFile('file')) {
+
+         $filename = "file-employees.csv";
+         Storage::disk('s3')->put('employees/' . $filename, file_get_contents($file->file('file')));
+         return true;
+      }
+      return false;
    }
 }
