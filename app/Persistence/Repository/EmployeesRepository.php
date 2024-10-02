@@ -3,8 +3,11 @@
 namespace App\Persistence\Repository;
 
 use App\Helper\General;
+use App\Mail\TemplateMail;
 use App\Models\User;
 use App\Persistence\Interfaces\EmployeesRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class EmployeesRepository implements EmployeesRepositoryInterface
@@ -65,6 +68,8 @@ class EmployeesRepository implements EmployeesRepositoryInterface
 
          $filename = "file-employees.csv";
          Storage::disk('s3')->put('employees/' . $filename, file_get_contents($file->file('file')));
+
+         Mail::to(Auth::user()->email)->send(new TemplateMail("Dados importados com sucesso!", "Arquivo CSV recebido"));
          return true;
       }
       return false;

@@ -14,7 +14,7 @@ use App\Http\Requests\{
     RegisterRequest,
     LoginRequest
 };
-use App\Mail\WelcomeMail;
+use App\Mail\TemplateMail;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 
@@ -184,7 +184,7 @@ class AuthLoginController extends ResponseController
 
             $input = new RegisterInput($request->all());
             $this->useCase->register($input->toArray());
-            Mail::to($input->toArray()['email'])->send(new WelcomeMail());
+            Mail::to($input->toArray()['email'])->send(new TemplateMail("Cadastro realizado com sucesso!", "Recebemos o seu cadastro"));
             return $this->successResponse('Cadastro realizado com sucesso!'); 
         } catch (HttpException $e) {
             return $this->errorResponse($e, [], $e->getStatusCode());

@@ -9,16 +9,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class WelcomeMail extends Mailable
+class TemplateMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    private $title;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($title, public $body)
     {
-        //
+        $this->title = $title;
     }
 
     /**
@@ -27,7 +28,7 @@ class WelcomeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Cadastro realizado com sucesso!',
+            subject: $this->title,
         );
     }
 
@@ -37,7 +38,7 @@ class WelcomeMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails/index',
+            view: 'emails.index',
         );
     }
 
