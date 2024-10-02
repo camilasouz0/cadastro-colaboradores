@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EmployeeResource;
 
 class ResponseController extends Controller
 {	
-    public function successResponse($msg = 'sucesso', $result = [], $code = 200)
+    public function successResponse($msg = 'sucesso', $resource, $result = [], $code = 200)
     {
+        $class = "\\App\\Http\\Resources\\".$resource;
+
         $response = [
             'success' => true,
             'message' => $msg,
-            'body' => $result,
+            'body' =>  $class::collection($result),
         ];
     
         return response()->json($response, $code);

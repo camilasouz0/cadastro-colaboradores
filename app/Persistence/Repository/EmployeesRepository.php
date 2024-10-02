@@ -3,10 +3,12 @@
 namespace App\Persistence\Repository;
 
 use App\Helper\General;
+use App\Http\Resources\EmployeeResource;
 use App\Mail\TemplateMail;
 use App\Models\User;
 use App\Persistence\Interfaces\EmployeesRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,21 +23,26 @@ class EmployeesRepository implements EmployeesRepositoryInterface
       $this->user = $user;
    }
 
-   public function findByEmployee($id): User
+   public function findByEmployee($id)
    {
       $result = $this->user
-      ->where('profile', 'employee')
-      ->where('id', $id)
-      ->first();
+         ->where('profile', 'employee')
+         ->where('id', $id)
+         ->first();
 
-      return $result;
+         $resultArray = $result->toArray();
+         if (isset($resultArray['id_gestor'])) {
+            $response = Gate::inspect('viewEmployee', new User($resultArray));
+
+            return [$response, $result];
+         }
    }
 
-   public function findAllEmployee(): array
+   public function findAllEmployee()
    {
       $result = $this->user
       ->where('profile', 'employee')
-      ->toArray();
+      ->get();
 
       return $result;
    }

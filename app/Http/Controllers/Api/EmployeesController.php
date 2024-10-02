@@ -8,6 +8,8 @@ use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\Controller;
 use App\Http\InputOutput\EditEmployeeInput;
 use App\Http\Requests\EditEmployeeRequest;
+use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\FindAllEmployeeResource;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -66,14 +68,19 @@ class EmployeesController extends ResponseController
      */
 
     public function findByEmployee($id) {
-        $result = $this->repository->findByEmployee($id);
-        $response = Gate::inspect('viewEmployee', $result);
+        list($response, $result) = $this->repository->findByEmployee($id);
 
         if ($response->allowed()) {
-            return $result;
-        } else {
-            return $response->message();
-        }
+            return [
+               'success' => true,
+               'data' => EmployeeResource::collection($result),
+            ];
+         } else {
+            return [
+               'success' => false,
+               'data' => $response->message(),
+            ];
+         }
     }
 
     /**
@@ -95,9 +102,9 @@ class EmployeesController extends ResponseController
      */
     public function findAllEmployee(Request $request) {
         try {
-            $result = $this->repository->findAllEmployee();
+            $response = $this->repository->findAllEmployee();
 
-            return $this->successResponse($result); 
+            return $this->successResponse('Lista de colaboradores', 'FindAllEmployeeResource', $response); 
         } catch (HttpException $e) {
             return $this->errorResponse($e, [], $e->getStatusCode());
         } catch (Exception $e) {
