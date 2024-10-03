@@ -14,7 +14,7 @@ class RegisterUseCase extends BaseAuthUseCases {
       $this->validatePassword($dados['password'], $dados['birthdate']);
       $this->verifyIfAuthUserIsAdmin();
 
-      $this->repository->register($dados);
+      return $this->repository->register($dados);
    }
 
    private function validatePassword(string $password, string $birthdate): void {
