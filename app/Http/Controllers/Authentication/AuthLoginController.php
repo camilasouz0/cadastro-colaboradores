@@ -98,7 +98,7 @@ class AuthLoginController extends ResponseController
             $input = new LoginInput($request->all());
             $response = $this->useCase->login($input->toArray());
 
-            return $this->successResponse('Autenticado com sucesso!', $response); 
+            return $this->successResponse('Autenticado com sucesso!', 'EmployeeResource', [$response]); 
         } catch (HttpException $e) {
             return $this->errorResponse($e, [], $e->getStatusCode());
         } catch (Exception $e) {
@@ -123,6 +123,30 @@ class AuthLoginController extends ResponseController
      *   ),
      *   @OA\Parameter(
      *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="cpf",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="city",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="state",
      *      in="query",
      *      required=true,
      *      @OA\Schema(

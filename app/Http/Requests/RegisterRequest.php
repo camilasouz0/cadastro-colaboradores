@@ -26,7 +26,10 @@ class RegisterRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
             'birthdate' => 'required|date|date_format:d/m/Y',
-            'profile' => 'in:employee,admin'
+            'profile' => 'in:employee,admin',
+            'cpf' => 'required',
+            'city' => 'required',
+            'state' => 'required'
         ];
     }
 
@@ -47,7 +50,10 @@ class RegisterRequest extends FormRequest
             'birthdate.required' => 'O campo data de nascimento é obrigatório.',
             'birthdate.date' => 'A data de nascimento deve ser uma data válida.',
             'birthdate.date_format' => 'A data de nascimento deve estar no formato DD/MM/YY.',
-            'profile.in' => 'O campo perfil deve ser "employee" ou "admin".'
+            'profile.in' => 'O campo perfil deve ser "employee" ou "admin".',
+            'cpf.required' => 'O campo cpf é obrigatório.',
+            'city.required' => 'O campo cidade é obrigatório.',
+            'state.required' => 'O campo Estado é obrigatório.'
         ];
     }
 }

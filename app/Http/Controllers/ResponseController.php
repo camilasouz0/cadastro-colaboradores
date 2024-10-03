@@ -7,14 +7,14 @@ use App\Http\Resources\EmployeeResource;
 
 class ResponseController extends Controller
 {	
-    public function successResponse($msg = 'sucesso', $resource, $result = [], $code = 200)
+    public function successResponse($msg = 'sucesso', $resource = 'EmployeeResource', $result = [], $code = 200)
     {
         $class = "\\App\\Http\\Resources\\".$resource;
 
         $response = [
             'success' => true,
             'message' => $msg,
-            'body' =>  $class::collection($result),
+            'body' =>  !empty($resource) ? $class::collection($result) : [],
         ];
     
         return response()->json($response, $code);

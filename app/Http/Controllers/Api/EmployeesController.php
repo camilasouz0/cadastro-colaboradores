@@ -8,6 +8,7 @@ use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\Controller;
 use App\Http\InputOutput\EditEmployeeInput;
 use App\Http\Requests\EditEmployeeRequest;
+use App\Http\Requests\UploadEmployeeRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\FindAllEmployeeResource;
 use Exception;
@@ -239,11 +240,11 @@ class EmployeesController extends ResponseController
      * )
     */
 
-    public function uploadEmployee(Request $request) {
+    public function uploadEmployee(UploadEmployeeRequest $request) {
         try {
             $result = $this->useCases->uploadEmployee($request);
 
-            return $this->successResponse('Arquivo importado com sucesso!', $result); 
+            return $this->successResponse('Arquivo importado com sucesso!'); 
         } catch (HttpException $e) {
             return $this->errorResponse($e, [], $e->getStatusCode());
         } catch (Exception $e) {
